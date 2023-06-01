@@ -7,6 +7,7 @@ package br.com.infocenter.telas;
 import java.sql.*; 
 import br.com.infocenter.dao.ModuloConexao; 
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 // a linha abaixo importa recursos da biblioteca sqlite 
 import net.proteanit.sql.DbUtils;
@@ -57,10 +58,7 @@ public class TelaCliente extends javax.swing.JInternalFrame {
 
                    JOptionPane.showMessageDialog(null, "Cliente adicionado com sucesso");
 
-                   txtCliNome.setText(null); 
-                   txtCliEndereco.setText(null); 
-                   txtCliTelefone.setText(null); 
-                   txtCliEmail.setText(null); 
+                   limpar();
                    
                 }
              }
@@ -73,7 +71,8 @@ public class TelaCliente extends javax.swing.JInternalFrame {
      
      private void pesquisar_cliente() {
          
-         String sql = "SELECT * FROM clientes WHERE nomecli like ?";
+         String sql = "SELECT idcli AS id, nomecli AS nome, endcli AS endereço, fonecli AS fone, \n" +
+"emailcli AS email FROM clientes WHERE nomecli like ?";
          
          try {
              
@@ -119,11 +118,8 @@ public class TelaCliente extends javax.swing.JInternalFrame {
                 if (adicionado > 0) {
 
                    JOptionPane.showMessageDialog(null, "Cliente atualizado com sucesso");
-
-                   txtCliNome.setText(null); 
-                   txtCliEndereco.setText(null); 
-                   txtCliTelefone.setText(null); 
-                   txtCliEmail.setText(null); 
+                   
+                   limpar();
                    
                    btnAdicionar.setEnabled(true);
                    
@@ -135,6 +131,18 @@ public class TelaCliente extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, e);
         }
     }
+     
+     private void limpar() {
+        
+        txtCliPesquisar.setText(null);
+        txtCliId.setText(null);
+        txtCliNome.setText(null); 
+        txtCliEndereco.setText(null); 
+        txtCliTelefone.setText(null); 
+        txtCliEmail.setText(null); 
+        
+        ((DefaultTableModel) tblClientes.getModel()).setRowCount(0);
+     }
      
      private void remover() {
         
@@ -154,10 +162,8 @@ public class TelaCliente extends javax.swing.JInternalFrame {
                 if(apagado > 0) {
                     
                     JOptionPane.showMessageDialog(null, "Usuário removido com sucesso"); 
-                    txtCliNome.setText(null); 
-                    txtCliTelefone.setText(null); 
-                    txtCliEmail.setText(null); 
-                    txtCliEndereco.setText(null); 
+                    
+                    limpar();
                     
                     btnAdicionar.setEnabled(true);
                     
@@ -253,17 +259,25 @@ public class TelaCliente extends javax.swing.JInternalFrame {
 
         lblCampo.setText("* Campo Obrigatórios");
 
+        tblClientes = new javax.swing.JTable() {
+
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+        };
         tblClientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "id", "nome", "endereço", "fone", "email"
             }
         ));
+        tblClientes.setFocusable(false);
+        tblClientes.getTableHeader().setReorderingAllowed(false);
         tblClientes.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblClientesMouseClicked(evt);

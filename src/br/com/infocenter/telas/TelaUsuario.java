@@ -101,10 +101,7 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
 
                    JOptionPane.showMessageDialog(null, "Usuário adicionado com sucesso");
 
-                   txtUsuNome.setText(null); 
-                   txtUsuFone.setText(null); 
-                   txtUsuLogin.setText(null); 
-                   txtUsuSenha.setText(null); 
+                   limpar();
                    
                 }
              }
@@ -114,6 +111,14 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
              JOptionPane.showMessageDialog(null, e);
          }
      }
+    
+    private void limpar() {
+        
+        txtUsuNome.setText(null); 
+        txtUsuFone.setText(null); 
+        txtUsuLogin.setText(null); 
+        txtUsuSenha.setText(null); 
+    }
     
     private void alterar() {
         
@@ -148,11 +153,7 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
 
                    JOptionPane.showMessageDialog(null, "Usuário atualizado com sucesso");
 
-                   txtUsuNome.setText(null); 
-                   txtUsuFone.setText(null); 
-                   txtUsuLogin.setText(null); 
-                   txtUsuSenha.setText(null); 
-                   
+                   limpar();
                 }
              }
             
@@ -180,10 +181,8 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
                 if(apagado > 0) {
                     
                     JOptionPane.showMessageDialog(null, "Usuário removido com sucesso"); 
-                    txtUsuNome.setText(null); 
-                    txtUsuFone.setText(null); 
-                    txtUsuLogin.setText(null); 
-                    txtUsuSenha.setText(null); 
+                    
+                    limpar();
                     
                 } 
                 
