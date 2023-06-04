@@ -219,7 +219,7 @@ public class TelaCliente extends javax.swing.JInternalFrame {
         setMaximizable(true);
         setResizable(true);
         setTitle("Clientes");
-        setPreferredSize(new java.awt.Dimension(658, 500));
+        setPreferredSize(new java.awt.Dimension(640, 480));
 
         btnAdicionar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/infocenter/icones/create.png"))); // NOI18N
         btnAdicionar.setToolTipText("Adicionar");

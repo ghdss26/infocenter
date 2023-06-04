@@ -241,7 +241,7 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setMaximizable(true);
         setTitle("Usuários");
-        setPreferredSize(new java.awt.Dimension(658, 500));
+        setPreferredSize(new java.awt.Dimension(640, 480));
 
         jLabel1.setText("Id");
 
