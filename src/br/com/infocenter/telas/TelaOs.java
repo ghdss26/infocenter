@@ -110,6 +110,64 @@ public class TelaOs extends javax.swing.JInternalFrame {
         }
     }
     
+    private void pesquisar_os() {
+        
+        String num_os = JOptionPane.showInputDialog("Número da OS"); 
+        String sql = "SELECT * FROM os WHERE os = " + num_os; 
+        
+        try {
+            
+            pst = conexao.prepareStatement(sql); 
+            rs = pst.executeQuery(); 
+            
+            if (rs.next()) {
+                
+                txtOs.setText(rs.getString(1));
+                txtData.setText(rs.getString(2)); 
+                
+                String rbtTipo = rs.getString(3); 
+                
+                if (rbtTipo.equals("Ordem de Serviço")) {
+                    
+                    rbtOs.setSelected(true); 
+                    tipo = "Ordem de Serviço"; 
+                    
+                } else {
+                    
+                    rbtOrc.setSelected(true); 
+                    tipo="Orçamento"; 
+                    
+                }
+                
+                cboOsSit.setSelectedItem(rs.getString(4)); 
+                txtOsEquip.setText(rs.getString(5)); 
+                txtOsDef.setText(rs.getString(6)); 
+                txtOsServ.setText(rs.getString(7)); 
+                txtOsTec.setText(rs.getString(8)); 
+                txtOsValor.setText(rs.getString(9)); 
+                txtCliId.setText(rs.getString(10));
+                
+                btnOsAdd.setEnabled(false);
+                txtCliPesquisar.setEnabled(false); 
+                tblClientes.setVisible(false); 
+                
+                
+            } else {
+                
+                JOptionPane.showMessageDialog(null, "Os não cadastrada"); 
+                
+            }
+        } catch (java.sql.SQLSyntaxErrorException e) {
+            
+            JOptionPane.showMessageDialog(null, "OS Inválida");
+            System.out.println(e); 
+            
+        } catch (Exception e2) {
+            
+            JOptionPane.showMessageDialog(null, e2);
+        }
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -225,12 +283,17 @@ public class TelaOs extends javax.swing.JInternalFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(12, 12, 12)
                         .addComponent(txtOs, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(44, 44, 44)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(rbtOs)
-                    .addComponent(jLabel2)
-                    .addComponent(txtData, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(36, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(44, 44, 44)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(rbtOs)
+                            .addComponent(jLabel2))
+                        .addContainerGap(36, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txtData, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -240,9 +303,9 @@ public class TelaOs extends javax.swing.JInternalFrame {
                     .addComponent(jLabel1)
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtOs, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtOs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(19, 19, 19)
@@ -499,7 +562,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
 
     private void btnOsPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOsPesquisarActionPerformed
         // Chamando o método consultar
-       
+       pesquisar_os();
     }//GEN-LAST:event_btnOsPesquisarActionPerformed
 
     private void btnOsImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOsImprimirActionPerformed
