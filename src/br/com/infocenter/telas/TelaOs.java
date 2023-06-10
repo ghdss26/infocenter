@@ -157,7 +157,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(null, "Os não cadastrada"); 
                 
             }
-        } catch (java.sql.SQLSyntaxErrorException e) {
+        } catch (SQLSyntaxErrorException e) {
             
             JOptionPane.showMessageDialog(null, "OS Inválida");
             System.out.println(e); 
@@ -165,6 +165,66 @@ public class TelaOs extends javax.swing.JInternalFrame {
         } catch (Exception e2) {
             
             JOptionPane.showMessageDialog(null, e2);
+        }
+    }
+    
+    private void alterar_os() {
+        
+        String sql = "UPDATE os SET tipo = ?, situacao = ?, equipamento = ?, defeito = ?, "
+                + "servico = ?, tecnico = ?, valor = ? WHERE os = ?";
+        
+         try {
+            
+            pst = conexao.prepareStatement(sql); 
+            pst.setString(1, tipo);
+            pst.setString(2, cboOsSit.getSelectedItem().toString()); 
+            pst.setString(3, txtOsEquip.getText()); 
+            pst.setString(4, txtOsDef.getText()); 
+            pst.setString(5, txtOsServ.getText()); 
+            pst.setString(6, txtOsTec.getText()); 
+            
+            // .replace substitui a vírgula pelo ponto
+            pst.setString(7, txtOsValor.getText().replace(",", "."));
+            pst.setString(8, txtOs.getText()); 
+            
+            // validação dos campos
+            if (txtCliId.getText().isEmpty() 
+                    || (txtOsEquip.getText().isEmpty() 
+                    || (txtOsDef.getText().isEmpty() 
+                    || (txtOsServ.getText().isEmpty() 
+                    || (txtOsTec.getText().isEmpty() 
+                    || (txtOsValor.getText().isEmpty()))))))  {
+                
+                
+                JOptionPane.showMessageDialog(null, "Preencha todos os campos obrigatórios");
+                
+            } else {
+                
+                int adicionado = pst.executeUpdate(); 
+                
+                if(adicionado > 0) {
+                    
+                    JOptionPane.showMessageDialog(null, "Ordem de Serviço alterado com sucesso"); 
+                    
+                    txtOs.setText(null); 
+                    txtData.setText(null);
+                    txtCliId.setText(null); 
+                    txtOsEquip.setText(null); 
+                    txtOsDef.setText(null); 
+                    txtOsServ.setText(null);
+                    txtOsTec.setText(null); 
+                    txtOsValor.setText(null); 
+                    
+                    btnOsAdd.setEnabled(true); 
+                    txtCliPesquisar.setEnabled(true);
+                    tblClientes.setVisible(true);
+                    
+                }
+            }
+             
+        } catch (Exception e) {
+            
+            JOptionPane.showMessageDialog(null, e);
         }
     }
     
@@ -552,7 +612,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
 
     private void btnOsAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOsAtualizarActionPerformed
         // TODO add your handling code here:
-
+        alterar_os();
     }//GEN-LAST:event_btnOsAtualizarActionPerformed
 
     private void btnOsAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOsAddActionPerformed
