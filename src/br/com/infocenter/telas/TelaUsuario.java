@@ -33,8 +33,7 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
             
             pst = conexao.prepareStatement(sql); 
             pst.setString(1, txtUsuId.getText()); 
-            
-            
+           
             rs = pst.executeQuery();
             
             if (rs.next()) {
