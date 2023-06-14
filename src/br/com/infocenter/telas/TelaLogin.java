@@ -55,7 +55,6 @@ public class TelaLogin extends javax.swing.JFrame {
                     TelaPrincipal.lblUsuario.setText(rs.getString(2));
                    this.dispose();
                }
-             
                
            } else {
                
