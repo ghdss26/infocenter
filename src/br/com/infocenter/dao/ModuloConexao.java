@@ -21,9 +21,9 @@ public class ModuloConexao {
         String driver = "com.mysql.cj.jdbc.Driver";
         
         // Armazenando informações do banco 
-        String url = "jdbc:mysql://localhost:3306/infocenter"; 
-        String user = "gustavo"; 
-        String password="123"; 
+        String url = "jdbc:mysql://localhost:3306/infocenter?characterEncoding=utf-8"; 
+        String user = "dba"; 
+        String password="Infocenter@123456"; 
         
         // Estabelecendo a conexão com o banco 
         
