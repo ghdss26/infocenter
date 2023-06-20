@@ -10,7 +10,7 @@ Gustavo Henrique de Souza Silva
 
 ### Apresentação do projeto
 
-[![Java MySQL](https://img.youtube.com/vi/eA4WjjkzK3c/0.jpg)](https://youtu.be/eA4WjjkzK3c "Assistir no YouTube")
+
 
 ### Bibliotecas
 
