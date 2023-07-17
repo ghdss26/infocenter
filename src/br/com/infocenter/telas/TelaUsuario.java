@@ -7,6 +7,9 @@ package br.com.infocenter.telas;
 import java.sql.*; 
 import br.com.infocenter.dao.ModuloConexao;
 import javax.swing.JOptionPane;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.PlainDocument;
 
 /**
  *
@@ -23,6 +26,11 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
         initComponents();
         conexao = ModuloConexao.conector(); 
         
+         TelefoneFormatter telefoneFormatter = new TelefoneFormatter();
+        
+        // Associe o formatter ao campo de texto
+        txtUsuFone.setDocument(telefoneFormatter);
+        
     }
     
     private void consultar() {
@@ -38,7 +46,7 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
             
             if (rs.next()) {
                 
-                txtUsuNome.setText(rs.getNString(2));
+                txtUsuNome.setText(rs.getString(2));
                 txtUsuFone.setText(rs.getString(3));
                 txtUsuLogin.setText(rs.getString(4)); 
                 txtUsuSenha.setText(rs.getString(5)); 
@@ -191,6 +199,71 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
             }
         }
     }
+    
+    class TelefoneFormatter extends PlainDocument  {
+        
+        private static final int MAX_LENGTH = 13; 
+        
+        public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+             
+            if (str == null) {
+                return;
+            } 
+            
+            String text = getText(0, getLength());
+            int currentLength = text.length();
+            
+            if (currentLength >= MAX_LENGTH) {
+                return;
+            }
+            
+            int insertLength = str.length();
+            if (currentLength + insertLength > MAX_LENGTH) {
+                insertLength = MAX_LENGTH - currentLength;
+                str = str.substring(0, insertLength);
+            }
+            
+            StringBuilder sb = new StringBuilder(text);
+            sb.insert(offs, str);
+
+            formatTelefone(sb);
+
+            super.remove(0, getLength());
+            super.insertString(0, sb.toString(), a);
+        }
+    }
+    
+     private void formatTelefone(StringBuilder sb) {
+         
+          String digitsOnly = sb.toString().replaceAll("[^0-9]", "");
+          
+          if (digitsOnly.length() >= 2) {
+              
+            sb.setLength(0);
+            sb.append("(");
+            sb.append(digitsOnly.substring(0, 2));
+            sb.append(")");
+            
+            if (digitsOnly.length() >= 7) {
+                
+                sb.append(" ");
+                sb.append(digitsOnly.substring(2, 7)); 
+                
+                if (digitsOnly.length() >= 11) {
+                    sb.append("-");
+                    sb.append(digitsOnly.substring(7, 11));
+                    
+                } else {
+                    
+                    sb.append(digitsOnly.substring(7));
+                }
+            } else {
+                
+                sb.append(digitsOnly.substring(2));
+            }
+          }
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.

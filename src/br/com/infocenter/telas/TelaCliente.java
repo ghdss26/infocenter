@@ -12,6 +12,10 @@ import javax.swing.table.DefaultTableModel;
 // a linha abaixo importa recursos da biblioteca sqlite 
 import net.proteanit.sql.DbUtils;
 
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.PlainDocument;
+
 /**
  *
  * @author gustavo
@@ -23,8 +27,15 @@ public class TelaCliente extends javax.swing.JInternalFrame {
     ResultSet rs = null; 
     
     public TelaCliente() {
+        
         initComponents();
         conexao = ModuloConexao.conector(); 
+        
+         // Crie um telefoneFormatter
+        TelefoneFormatter telefoneFormatter = new TelefoneFormatter();
+        
+        // Associe o formatter ao campo de texto
+        txtCliTelefone.setDocument(telefoneFormatter);
     }
     
      private void adicionar() {
@@ -176,7 +187,6 @@ public class TelaCliente extends javax.swing.JInternalFrame {
         }
     }
     
-     
      public void setar_campos_clientes() {
          
          int setar = tblClientes.getSelectedRow(); 
@@ -190,6 +200,70 @@ public class TelaCliente extends javax.swing.JInternalFrame {
          btnAdicionar.setEnabled(false);
          
      }
+     
+    class TelefoneFormatter extends PlainDocument  {
+        
+        private static final int MAX_LENGTH = 13; 
+        
+        public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+             
+            if (str == null) {
+                return;
+            } 
+            
+            String text = getText(0, getLength());
+            int currentLength = text.length();
+            
+            if (currentLength >= MAX_LENGTH) {
+                return;
+            }
+            
+            int insertLength = str.length();
+            if (currentLength + insertLength > MAX_LENGTH) {
+                insertLength = MAX_LENGTH - currentLength;
+                str = str.substring(0, insertLength);
+            }
+            
+            StringBuilder sb = new StringBuilder(text);
+            sb.insert(offs, str);
+
+            formatTelefone(sb);
+
+            super.remove(0, getLength());
+            super.insertString(0, sb.toString(), a);
+        }
+    }
+    
+     private void formatTelefone(StringBuilder sb) {
+         
+          String digitsOnly = sb.toString().replaceAll("[^0-9]", "");
+          
+          if (digitsOnly.length() >= 2) {
+              
+            sb.setLength(0);
+            sb.append("(");
+            sb.append(digitsOnly.substring(0, 2));
+            sb.append(")");
+            
+            if (digitsOnly.length() >= 7) {
+                
+                sb.append(" ");
+                sb.append(digitsOnly.substring(2, 7)); 
+                
+                if (digitsOnly.length() >= 11) {
+                    sb.append("-");
+                    sb.append(digitsOnly.substring(7, 11));
+                    
+                } else {
+                    
+                    sb.append(digitsOnly.substring(7));
+                }
+            } else {
+                
+                sb.append(digitsOnly.substring(2));
+            }
+          }
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -251,6 +325,11 @@ public class TelaCliente extends javax.swing.JInternalFrame {
             }
         });
 
+        txtCliPesquisar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCliPesquisarActionPerformed(evt);
+            }
+        });
         txtCliPesquisar.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtCliPesquisarKeyReleased(evt);
@@ -463,6 +542,10 @@ public class TelaCliente extends javax.swing.JInternalFrame {
     private void txtCliEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCliEmailActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCliEmailActionPerformed
+
+    private void txtCliPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCliPesquisarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCliPesquisarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
